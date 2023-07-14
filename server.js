@@ -1,7 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const knex = require('knex')
+const knex = require('knex');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -11,14 +12,17 @@ const image = require('./controllers/image');
 const db = knex({
   client: 'pg',
   connection: {
-    connectionString : process.env.DATABASE_URL,
-    ssl: true,
+    host : '127.0.0.1',
+    user : 'postgres',
+    password : 'test',
+    database : 'smart-brain'
   }
 });
 
 const app = express();
 
 app.use(cors())
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.get('/', (req, res)=> { res.send(db.users) })
